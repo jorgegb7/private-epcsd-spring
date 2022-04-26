@@ -1,2 +1,7 @@
-package edu.uoc.epcsd.showcatalog.entities;public enum TStatus {
+package edu.uoc.epcsd.showcatalog.entities;
+
+public enum TStatus {
+    CREATED,
+    OPENED,
+    CANCELLED
 }
