@@ -24,7 +24,7 @@ public class Performance {
     private java.sql.Date date;
 
     @Column(name = "time")
-    private java.sql.Time time;
+    private java.sql.Timestamp time;
 
     @Column(name = "streaming_url")
     private String streamingUrl;

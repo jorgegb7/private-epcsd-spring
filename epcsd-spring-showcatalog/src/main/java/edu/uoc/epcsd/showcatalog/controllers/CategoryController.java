@@ -28,9 +28,11 @@ public class CategoryController {
     // create category
     @PostMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public Category createCategory(@RequestBody Category newCategory){
+    public Category createCategory(@RequestBody Category category){
         log.trace("Create Category");
-        return categoryRepository.save(newCategory);
+        Category finalCategory = categoryRepository.save(category);
+        return finalCategory;
+
     }
 
     //delete category

@@ -21,7 +21,7 @@ public class ShowController {
     @Autowired
     private KafkaTemplate<String, Show> kafkaTemplate;
 
-    //get shows
+    //get all shows
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<Show> getAllShows() {
@@ -31,10 +31,11 @@ public class ShowController {
 
     //create show
     @PostMapping("/")
-    public Show createShow(@RequestBody Show newShow) {
+    public Show createShow(@RequestBody Show show) {
         log.trace("Create Show");
+        Show finalShow = showRepository.save(show);
         // TODO: NOTIFY
-        return showRepository.save(newShow);
+        return finalShow;
     }
 
     //delete show

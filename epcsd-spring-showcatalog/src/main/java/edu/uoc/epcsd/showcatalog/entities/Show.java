@@ -39,7 +39,7 @@ public class Show {
     private Integer capacity;
 
     @Column(name = "on_sale_date")
-    private java.sql.Time onSaleDate;
+    private java.sql.Timestamp onSaleDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

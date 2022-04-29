@@ -16,9 +16,10 @@ public class PerformanceController {
 
     //create performance
     @PostMapping("/")
-    public Performance createPerformance(@RequestBody Performance newPerformance) {
+    public Performance createPerformance(@RequestBody Performance performance) {
         log.trace("Create Performance");
-        return performanceRepository.save(newPerformance);
+        Performance finalPerformance = performanceRepository.save(performance);
+        return finalPerformance;
     }
 
     //delete show
