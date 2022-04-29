@@ -30,8 +30,7 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.OK)
     public Category createCategory(@RequestBody Category category){
         log.trace("Create Category");
-        Category finalCategory = categoryRepository.save(category);
-        return finalCategory;
+        return categoryRepository.save(category);
 
     }
 

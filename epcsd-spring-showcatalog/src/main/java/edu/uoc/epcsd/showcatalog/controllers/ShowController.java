@@ -1,5 +1,6 @@
 package edu.uoc.epcsd.showcatalog.controllers;
 
+import edu.uoc.epcsd.showcatalog.entities.Category;
 import edu.uoc.epcsd.showcatalog.entities.Show;
 import edu.uoc.epcsd.showcatalog.repositories.ShowRepository;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Log4j2
 @RestController
-@RequestMapping("/show")
+@RequestMapping("/shows")
 public class ShowController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class ShowController {
     private KafkaTemplate<String, Show> kafkaTemplate;
 
     //get all shows
-    @GetMapping("/")
+    @GetMapping("/allShows")
     @ResponseStatus(HttpStatus.OK)
     public List<Show> getAllShows() {
         log.trace("Get All Shows");
@@ -30,7 +31,7 @@ public class ShowController {
     }
 
     //create show
-    @PostMapping("/")
+    @PostMapping("/createShow")
     public Show createShow(@RequestBody Show show) {
         log.trace("Create Show");
         Show finalShow = showRepository.save(show);
@@ -39,7 +40,7 @@ public class ShowController {
     }
 
     //delete show
-    @DeleteMapping("/{showId}")
+    @DeleteMapping("/delete/{showId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteShow(@PathVariable Long showId) {
 
@@ -49,5 +50,13 @@ public class ShowController {
         } else {
             log.trace("Show does not exist");
         }
+    }
+
+    // get shows by name
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Show> getShowsByName(@PathVariable("name") String name) {
+        log.trace("Search by name");
+        return showRepository.findShowsByName(name);
     }
 }
