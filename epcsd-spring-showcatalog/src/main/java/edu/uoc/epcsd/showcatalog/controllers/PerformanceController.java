@@ -26,7 +26,13 @@ public class PerformanceController {
     @DeleteMapping("/{performanceId}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePerformance(@PathVariable Long performanceId) {
-        log.trace("Delete Performance");
-        performanceRepository.deleteById(performanceId);
+
+        if (performanceRepository.existsById(performanceId)){
+            log.trace("Delete Performance");
+            performanceRepository.deleteById(performanceId);
+        } else {
+            log.trace("Performance does not exist");
+        }
+
     }
 }

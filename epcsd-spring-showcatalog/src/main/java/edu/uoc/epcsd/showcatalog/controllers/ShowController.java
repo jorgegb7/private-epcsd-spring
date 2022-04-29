@@ -42,7 +42,12 @@ public class ShowController {
     @DeleteMapping("/{showId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteShow(@PathVariable Long showId) {
-        log.trace("Delete Show");
-        showRepository.deleteById(showId);
+
+        if (showRepository.existsById(showId)){
+            log.trace("Delete Show");
+            showRepository.deleteById(showId);
+        } else {
+            log.trace("Show does not exist");
+        }
     }
 }

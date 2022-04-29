@@ -39,7 +39,13 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCategory(@PathVariable Long categoryId) {
-        log.trace("Delete Category");
-        categoryRepository.deleteById(categoryId);
+
+        if (categoryRepository.existsById(categoryId)){
+            log.trace("Delete Category");
+            categoryRepository.deleteById(categoryId);
+        } else {
+            log.trace("Category does not exist");
+        }
+
     }
 }
