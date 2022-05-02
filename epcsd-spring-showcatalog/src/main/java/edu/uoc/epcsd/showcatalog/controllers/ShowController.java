@@ -34,9 +34,8 @@ public class ShowController {
     @PostMapping("/createShow")
     public Show createShow(@RequestBody Show show) {
         log.trace("Create Show");
-        Show finalShow = showRepository.save(show);
         // TODO: NOTIFY
-        return finalShow;
+        return showRepository.save(show);
     }
 
     //delete show
@@ -59,4 +58,46 @@ public class ShowController {
         log.trace("Search by name");
         return showRepository.findShowsByName(name);
     }
+
+    // get shows by categories
+    @GetMapping("/category/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Show> getShowsByCategories(@PathVariable("name") String name) {
+        log.trace("Search by name");
+        return showRepository.findShowsByCategoryName(name);
+    }
+
+
+
+//   //create performance
+//    @PostMapping("/")
+//    public Performance createPerformance(@RequestBody Performance performance) {
+//        log.trace("Create Performance");
+//        Performance finalPerformance = performanceRepository.save(performance);
+//        return finalPerformance;
+//    }
+//
+//    //delete show
+//    @DeleteMapping("/{performanceId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deletePerformance(@PathVariable Long performanceId) {
+//
+//        if (performanceRepository.existsById(performanceId)){
+//            log.trace("Delete Performance");
+//            performanceRepository.deleteById(performanceId);
+//        } else {
+//            log.trace("Performance does not exist");
+//        }
+//
+//    }
+//
+//    // get performance by show
+//    @GetMapping("/{showName}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Performance> getPerformanceByShowName (@PathVariable String showName){
+//        log.trace("getting performance by show");
+//        return performanceRepository.findPerformanceByShowName(showName);
+//    }
+
+
 }

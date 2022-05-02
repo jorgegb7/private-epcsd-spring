@@ -3,9 +3,11 @@ package edu.uoc.epcsd.showcatalog.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import javax.persistence.*;
 
-@Entity
 @ToString
 @Getter
 @Setter
@@ -14,30 +16,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-
+@Embeddable
 public class Performance {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "date")
-    private java.sql.Date date;
-
-    @Column(name = "time")
-    private java.sql.Timestamp time;
-
-    @Column(name = "streaming_url")
-    private String streamingUrl;
-
-    @Column(name = "remaining_seats")
+    private Date date;
+    private Timestamp time;
     private Integer remainingSeats;
-
-    @Column(name = "status")
     private TStatus status;
-
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "id_show")
-    private Show show;
 }

@@ -2,9 +2,12 @@ package edu.uoc.epcsd.showcatalog.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
+
 
 @Entity
 @ToString
@@ -42,8 +45,9 @@ public class Show {
     private java.sql.Timestamp onSaleDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private TStatus status;
+    @Column(name = "status_show")
+    private TStatus statusShow;
+
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
@@ -54,6 +58,8 @@ public class Show {
     private List<Category> categories;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "show", cascade = CascadeType.REMOVE)
-    private List<Performance> performances = new java.util.ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "performances")
+    @Embedded
+    private List<Performance> performances;
 }
