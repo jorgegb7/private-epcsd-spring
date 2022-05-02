@@ -26,7 +26,7 @@ public class CategoryController {
     }
 
     // create category
-    @PostMapping("/")
+    @PostMapping("/createCategory")
     @ResponseStatus(HttpStatus.OK)
     public Category createCategory(@RequestBody Category category){
         log.trace("Create Category");

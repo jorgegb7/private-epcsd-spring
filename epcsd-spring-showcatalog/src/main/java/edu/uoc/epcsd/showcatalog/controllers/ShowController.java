@@ -1,14 +1,18 @@
 package edu.uoc.epcsd.showcatalog.controllers;
 
 import edu.uoc.epcsd.showcatalog.entities.Category;
+import edu.uoc.epcsd.showcatalog.entities.Performance;
 import edu.uoc.epcsd.showcatalog.entities.Show;
 import edu.uoc.epcsd.showcatalog.repositories.ShowRepository;
+import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -55,8 +59,16 @@ public class ShowController {
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public List<Show> getShowsByName(@PathVariable("name") String name) {
-        log.trace("Search by name");
+        log.trace("Search show by name");
         return showRepository.findShowsByName(name);
+    }
+
+    // get shows by id
+    @GetMapping("/id/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Show getShowsById(@PathVariable("id") Long id) {
+        log.trace("Show properties show by id");
+        return showRepository.findShowsById(id);
     }
 
     // get shows by categories
@@ -68,36 +80,28 @@ public class ShowController {
     }
 
 
+    // get performance by show name
+    @GetMapping("/performance/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Performance> getPerformanceByShowId(@PathVariable("id") Long id){
+        if (showRepository.existsById(id)){
+            log.trace("Get Performances by Id");
+            return showRepository.findShowsById(id).getPerformances();
+        } else {
+            log.trace("Show does not exist, Performance cant be retrieved");
+            return null;
+        }
+    }
 
-//   //create performance
-//    @PostMapping("/")
-//    public Performance createPerformance(@RequestBody Performance performance) {
-//        log.trace("Create Performance");
-//        Performance finalPerformance = performanceRepository.save(performance);
-//        return finalPerformance;
-//    }
-//
-//    //delete show
-//    @DeleteMapping("/{performanceId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void deletePerformance(@PathVariable Long performanceId) {
-//
-//        if (performanceRepository.existsById(performanceId)){
-//            log.trace("Delete Performance");
-//            performanceRepository.deleteById(performanceId);
-//        } else {
-//            log.trace("Performance does not exist");
-//        }
-//
-//    }
-//
-//    // get performance by show
-//    @GetMapping("/{showName}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Performance> getPerformanceByShowName (@PathVariable String showName){
-//        log.trace("getting performance by show");
-//        return performanceRepository.findPerformanceByShowName(showName);
-//    }
-
+    // create performances
+    @PostMapping("/performance/createPerformancee")
+    public void createPerformance(@RequestBody Performance performance, Long id){
+        log.trace("Create Performance");
+        Show show = showRepository.findShowsById(id);
+        List<Performance> performances = show.getPerformances();
+        performances.add(performance);
+        show.setPerformances(performances);
+        showRepository.save(show);
+    }
 
 }

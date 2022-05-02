@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -59,7 +61,9 @@ public class Show {
 
     @JsonIgnore
     @ElementCollection
-    @CollectionTable(name = "performances")
+    @CollectionTable(name = "performances", joinColumns = @JoinColumn(name="id_show"))
+    @JoinColumn(name = "id_show")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Embedded
     private List<Performance> performances;
 }

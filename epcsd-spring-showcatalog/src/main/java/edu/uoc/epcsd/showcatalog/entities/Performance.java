@@ -21,5 +21,4 @@ public class Performance {
     private Date date;
     private Timestamp time;
     private Integer remainingSeats;
-    private TStatus status;
 }
