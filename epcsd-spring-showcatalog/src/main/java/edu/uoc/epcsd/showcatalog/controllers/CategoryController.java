@@ -31,7 +31,6 @@ public class CategoryController {
     public Category createCategory(@RequestBody Category category){
         log.trace("Create Category");
         return categoryRepository.save(category);
-
     }
 
     //delete category

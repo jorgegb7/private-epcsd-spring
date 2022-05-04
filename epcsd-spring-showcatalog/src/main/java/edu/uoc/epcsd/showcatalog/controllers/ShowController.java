@@ -3,11 +3,13 @@ package edu.uoc.epcsd.showcatalog.controllers;
 import edu.uoc.epcsd.showcatalog.entities.Category;
 import edu.uoc.epcsd.showcatalog.entities.Performance;
 import edu.uoc.epcsd.showcatalog.entities.Show;
+import edu.uoc.epcsd.showcatalog.kafka.KafkaConstants;
 import edu.uoc.epcsd.showcatalog.repositories.ShowRepository;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,9 @@ public class ShowController {
     @PostMapping("/createShow")
     public Show createShow(@RequestBody Show show) {
         log.trace("Create Show");
-        // TODO: NOTIFY
-        return showRepository.save(show);
+        showRepository.save(show);
+        kafkaTemplate.send("shows.add", show);
+        return show;
     }
 
     //delete show
@@ -95,13 +98,14 @@ public class ShowController {
 
     // create performances
     @PostMapping("/performance/createPerformancee")
-    public void createPerformance(@RequestBody Performance performance, Long id){
+    public Performance createPerformance(@RequestBody Performance performance, Long id){
         log.trace("Create Performance");
         Show show = showRepository.findShowsById(id);
         List<Performance> performances = show.getPerformances();
         performances.add(performance);
         show.setPerformances(performances);
         showRepository.save(show);
+        return performance;
     }
 
 }
